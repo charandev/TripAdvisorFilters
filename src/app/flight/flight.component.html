@@ -1,0 +1,202 @@
+<div *ngIf="formpage">
+<div align="center" class="container">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="source"> SOURCE</label>
+          <input type="text" class="form-control" id="source" required [(ngModel)]="src" name="source">
+        </div>
+    
+        <div class="form-group">
+          <label for="destination">Destination</label>
+          <input type="text" class="form-control" id="destination" required [(ngModel)]="dst" name="destination">
+        </div>
+        <div class="form-group">
+            <label for="date">date</label>
+            <input type="text" class="form-control" id="destination" required [(ngModel)]="date" name="date">
+          </div>
+
+
+
+
+
+        
+    <button type="submit" class="btn btn-success">Submit</button>
+    
+</form>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-4">
+<div *ngIf=message class="container">
+<div class="card">
+	<article class="card-group-item">
+		<header class="card-header">
+			<h6 class="title">Sort By </h6>
+		</header>
+		<div class="filter-content">
+			<div class="card-body">
+			<div class="form-row">
+        <div class="form-group">
+          <select class="custom-select" [(ngModel)]="sorting">
+          <option value="price">Price</option>
+          <option value="duration">Duration</option>
+          
+        </select>
+			</div>
+			</div>
+			</div> <!-- card-body.// -->
+		</div>
+  </article> <!-- card-group-item.// -->
+  
+
+
+
+
+
+  <article class="card-group-item">
+		<header class="card-header">
+			<h6 class="title">Number of Stops </h6>
+		</header>
+		<div class="filter-content">
+			<div class="card-body">
+			<div class="form-row">
+        
+
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input"  [(ngModel)]="zerostop" id="zerostop" />
+            <label class="custom-control-label" for="zerostop">0stop</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input"  [(ngModel)]="onestop" id="onestop" />
+            <label class="custom-control-label" for="onestop">1stop</label>
+          </div>
+        </div>
+
+
+			</div>
+			</div> <!-- card-body.// -->
+		</div>
+  </article> <!-- card-group-item.// -->
+  
+
+
+
+	<article class="card-group-item">
+		<header class="card-header">
+			<h6 class="title">Selection </h6>
+		</header>
+		<div class="filter-content">
+			<div class="card-body">
+				<div class="custom-control custom-checkbox">
+					<span class="float-right badge badge-light round">52</span>
+				  	<input type="checkbox" class="custom-control-input" [(ngModel)]="check1" name="check1"   id="check1">
+				  	<label class="custom-control-label" for="check1">Vistara</label>
+				</div> <!-- form-check.// -->
+
+				<div class="custom-control custom-checkbox">
+					<span class="float-right badge badge-light round">132</span>
+				  	<input type="checkbox" class="custom-control-input" [(ngModel)]="check2" id="check2">
+				 	<label class="custom-control-label"   for="check2">SpiceJet</label>
+				</div> <!-- form-check.// -->
+
+				<div class="custom-control custom-checkbox">
+					<span class="float-right badge badge-light round">17</span>
+				  	<input type="checkbox" class="custom-control-input" [(ngModel)]="check3"  id="check3">
+				  	<label class="custom-control-label"  for="check3">AirIndia</label>
+				</div> <!-- form-check.// -->
+
+				<div class="custom-control custom-checkbox">
+					<span class="float-right badge badge-light round">7</span>
+				  	<input type="checkbox" class="custom-control-input" [(ngModel)]="check4"  id="check4">
+				  	<label class="custom-control-label"  for="check4">GoAir</label>
+        </div>
+        
+        <div class="custom-control custom-checkbox">
+					<span class="float-right badge badge-light round">7</span>
+				  	<input type="checkbox" class="custom-control-input"  [(ngModel)]="check5" id="check5">
+				  	<label class="custom-control-label"  for="check5">Indigo</label>
+				</div>
+        <!-- form-check.// -->
+			</div> <!-- card-body.// -->
+		</div>
+	</article> <!-- card-group-item.// -->
+</div> <!-- card.// -->
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-sm-8">
+<div *ngIf=message class="container">
+  <div *ngFor="let d of filtereddata|custompipe:sorting | stop:zerostop:onestop | vistara:check1:check2:check3:check4:check5">
+  <div class="card ">
+
+    <div class="container-fluid">
+  
+      <p><i class="fa fa-plane" aria-hidden="true"></i> <b> {{d.airline}}</b></p>
+  
+      <br />
+  
+      <div class="row">
+  
+        <div class="col-sm-3">
+  
+          <b><p>{{d.origin}}</p></b>
+  
+          <p>{{d.deptime}}</p>
+  
+        </div>
+  
+        <div class="col-sm-3 content-center duration">
+  
+          <p>{{d.duration}}</p>
+          <p>{{d['onwardflights'].length}} Stop</p>
+  
+        </div>
+  
+        <div class="col-sm-3">
+            <div *ngIf="d['onwardflights'][0]">
+          <b><p>{{d['onwardflights'][d['onwardflights'].length-1].destination}}</p></b>
+           </div>
+           <div *ngIf="!d['onwardflights'][0]">
+              <b><p>{{d.destination}}</p></b>
+              </div>
+
+              <div *ngIf="d['onwardflights'][0]">
+          <p>{{d['onwardflights'][d['onwardflights'].length-1].arrtime}}</p>
+           </div>
+            <div *ngIf="!d['onwardflights'][0]">
+            <p>{{d.arrtime}}</p>
+            </div>
+        </div>
+  
+        <div class="col-sm-3">
+  
+          <h4>Rs {{d.fare.grossamount}}</h4>
+  
+          <button class="btn btn-primary">Book</button>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+  </div>
+  </div>
+</div>
+    
